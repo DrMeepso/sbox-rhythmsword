@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "5dSWi7QTzm3bvXLhsN210tPIVic2SC1A5A8Ptkfd/GvJNLSFIbpQR4PPuLXmXDH3rPzGncccxiC2zEKIrtuv4w==",
+  "success": true,
+  "projectFilePath": "D:\\SteamLibrary\\steamapps\\common\\sbox\\Addons\\rythemsword\\code\\rythemsword.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\theen\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\5.0.0\\microsoft.aspnetcore.app.ref.5.0.0.nupkg.sha512",
+    "C:\\Users\\theen\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\5.0.0\\microsoft.windowsdesktop.app.ref.5.0.0.nupkg.sha512",
+    "C:\\Users\\theen\\.nuget\\packages\\microsoft.netcore.app.ref\\5.0.0\\microsoft.netcore.app.ref.5.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
