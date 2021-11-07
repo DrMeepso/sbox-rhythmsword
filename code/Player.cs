@@ -8,9 +8,15 @@ namespace RhythmSword
 	partial class RhythmPlayer : Player
 	{
 		public bool isplaying;
-		public Entity SaberRightLocal;
-		public Entity SaberLeftLocal;
+		[Net, Predicted]
+		public AnimEntity LeftHand { get; set; }
+		[Net, Predicted]
+		public AnimEntity RightHand { get; set; }
 		public Game Localgame;
+
+		protected Vector3 LeftPosOffset => LeftHand.Rotation.Backward * 4f;
+		protected Vector3 RightPosOffset => RightHand.Rotation.Backward * 4f ;
+		protected Rotation RotOffset => Rotation.FromPitch( 65 );
 
 		public override void Spawn()
 		{
@@ -19,19 +25,7 @@ namespace RhythmSword
 			Log.Info( "Player Spawned" );
 			Localgame = RhythmGame.Current;
 
-			if ( VR.Enabled )
-			{
-				SaberRightLocal = new SaberRight()
-				{
-					Position = Input.VR.RightHand.Transform.Position,
-					Rotation = Input.VR.RightHand.Transform.Rotation
-				};
-				SaberLeftLocal = new SaberLeft()
-				{
-					Position = Input.VR.LeftHand.Transform.Position,
-					Rotation = Input.VR.LeftHand.Transform.Rotation
-				};
-			}
+
 		}
 
 		public override void Respawn()
@@ -56,6 +50,32 @@ namespace RhythmSword
 			base.Respawn();
 
 			Position = new Vector3( 0, 0, 5 );
+
+			if ( Input.VR.IsActive )
+			{
+				// Create Hands!
+				if ( LeftHand == null )
+				{
+					LeftHand = new AnimEntity();
+					LeftHand.SetModel( "models/hands/alyx_hand_left.vmdl" );
+					LeftHand.Scale = 1f;
+					//LeftHand.SetupPhysicsFromModel( PhysicsMotionType.Dynamic, false );
+					LeftHand.SetInteractsAs( CollisionLayer.Debris );
+
+					Log.Info( "Made a new Left Hand!" );
+				}
+				if ( RightHand == null )
+				{
+					RightHand = new AnimEntity();
+					RightHand.SetModel( "models/hands/alyx_hand_right.vmdl" );
+					RightHand.Scale = 1f;
+					//RightHand.SetupPhysicsFromModel( PhysicsMotionType.Dynamic, false );
+					RightHand.SetInteractsAs( CollisionLayer.Debris );
+
+					Log.Info( "Made a new Right Hand!" );
+				}
+			}
+
 		}
 
 		public override void Simulate( Client cl )
@@ -67,12 +87,16 @@ namespace RhythmSword
 				// Pause song when this is true
 
 			}
-			if (VR.Enabled )
-			{
-				SaberRightLocal.Position = Input.VR.RightHand.Transform.Position;
-				SaberLeftLocal.Position = Input.VR.LeftHand.Transform.Position;
-			}
+
+			if ( !Input.VR.IsActive || !IsServer ) return;
+
+			LeftHand.Position = (Input.VR.LeftHand.Transform.Position + LeftPosOffset);
+			LeftHand.Rotation = Input.VR.LeftHand.Transform.Rotation;
+
+			RightHand.Position = (Input.VR.RightHand.Transform.Position + RightPosOffset);
+			RightHand.Rotation = Input.VR.RightHand.Transform.Rotation;
 		}
+
 
 		public override void TakeDamage( DamageInfo info )
 		{
