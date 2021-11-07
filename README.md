@@ -1,4 +1,4 @@
-# sbox-rhythmsword
+# sbox - Rhythm Sword
 ### A rhythm game for s&box ~~based on beatsaber~~ straight form the minds of freerange chickens
 
 ## Things we gotta do
